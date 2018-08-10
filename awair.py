@@ -11,7 +11,7 @@ from homeassistant.const import (
 from homeassistant.helpers.config_validation import PLATFORM_SCHEMA
 from homeassistant.helpers.entity import Entity
 
-REQUIREMENTS = ['pyawair==0.0.4']
+REQUIREMENTS = ['pyawair==0.0.6']
 
 _LOGGER = logging.getLogger(__name__)
 
