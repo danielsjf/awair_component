@@ -7,9 +7,11 @@ import voluptuous as vol
 
 import homeassistant.helpers.config_validation as cv
 from homeassistant.const import (
-    ATTR_ATTRIBUTION, ATTR_TIME, ATTR_TEMPERATURE, CONF_TOKEN, CONF_MONITORED_CONDITIONS, CONF_NAME, CONF_SCAN_INTERVAL)
+    ATTR_ATTRIBUTION, ATTR_TIME, ATTR_TEMPERATURE, CONF_TOKEN, CONF_MONITORED_CONDITIONS, CONF_NAME)
 from homeassistant.helpers.config_validation import PLATFORM_SCHEMA
 from homeassistant.helpers.entity import Entity
+
+CONF_SCAN = "scan_interval"
 
 REQUIREMENTS = ['pyawair==0.0.7']
 
@@ -41,7 +43,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_NAME): cv.string,
     vol.Optional(CONF_MONITORED_CONDITIONS, default = list(SENSOR_TYPES)):
         vol.All(cv.ensure_list, [vol.In(SENSOR_TYPES)]),
-    vol.Optional(CONF_SCAN_INTERVAL, default = 60): cv.positive_int,
+    vol.Optional(CONF_SCAN, default = 60): cv.positive_int,
 })
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
@@ -51,7 +53,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 
     token = config.get(CONF_TOKEN)
     name = config.get(CONF_NAME)
-    scan_interval = config.get(CONF_SCAN_INTERVAL)
+    scan_interval = config.get(CONF_SCAN)
     awair_auth = AwairAuth(token)
     awair_poller = AwairDev(name, awair_auth, scan_interval)
 
