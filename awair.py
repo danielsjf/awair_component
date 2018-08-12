@@ -11,7 +11,7 @@ from homeassistant.const import (
 from homeassistant.helpers.config_validation import PLATFORM_SCHEMA
 from homeassistant.helpers.entity import Entity
 
-CONF_SCAN = "scan_interval"
+CONF_SCAN = "update_interval"
 
 REQUIREMENTS = ['pyawair==0.0.7']
 
