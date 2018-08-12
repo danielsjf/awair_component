@@ -47,44 +47,41 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 def setup_platform(hass, config, add_devices, discovery_info=None):
     """Set up the Awair sensor."""
     from pyawair.auth import AwairAuth
+    from pyawair.objects import AwairDev
 
     token = config.get(CONF_TOKEN)
     name = config.get(CONF_NAME)
     scan_interval = config.get(CONF_SCAN_INTERVAL)
     awair_auth = AwairAuth(token)
+    awair_poller = AwairDev(name, awair_auth, scan_interval)
 
     devs = []
 
     for indicator in config[CONF_MONITORED_CONDITIONS]:
-        devs.append(AwairSensor(
-            awair_auth, token, name, indicator, scan_interval))
+        devs.append(AwairSensor(awair_poller, name, indicator))
 
     add_devices(devs)
 
 
 class AwairSensor(Entity):
     """Implementation of an Awair sensor."""
+    from pyawair.objects import AwairDev
+
     _friendly_name: str
 
-    def __init__(self, awair_auth, token, device_name, indicator, scan_interval):
+    def __init__(self, awair_poller: AwairDev, device_name: str, indicator: str):
         """Initialize the sensor."""
-        from pyawair.data import get_all_devices
+        from pyawair.objects import AwairDev
 
-        self._token = token
-        self._auth = awair_auth
-        self._device_name = device_name
+        self._poller = awair_poller
         self._indicator = indicator
+        self._indicator_api = SENSOR_TYPES_API[indicator]
         self._indicator_name = SENSOR_TYPES[indicator][0]
         self._unit = SENSOR_TYPES[indicator][1]
+        self._device_name = device_name
         self._friendly_name = '{} {}'.format(self._device_name,self._indicator_name)
-        self._scan_interval = scan_interval
-        devices = get_all_devices(awair_auth)
-        self._type = next((item for item in devices if item["name"] == device_name),
-                          False)['deviceType']  # get the device type
-        self._id = next((item for item in devices if item["name"] == device_name),
-                        False)['deviceId']  # get the device ID
 
-        self._data = None
+        self._data = self._poller.get_state(self._indicator_api)
 
     @property
     def name(self):
@@ -121,16 +118,6 @@ class AwairSensor(Entity):
 
     def update(self):
         """Get the latest data and updates the states."""
-        from pyawair.data import get_current_air_data
-
         _LOGGER.debug("Update data for %s", self._friendly_name)
 
-        result = get_current_air_data(self._auth, device_type=self._type,device_id=self._id)
-        data = None
-
-        if self._indicator == 'score':
-            data = result[0]['score']
-        else:
-            data = next((item for item in result[0]['sensors'] if item["comp"] == SENSOR_TYPES_API[self._indicator]), False)['value']
-
-        self._data = data
+        self._data = self._poller.get_state(self._indicator_api)
