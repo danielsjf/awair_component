@@ -41,7 +41,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_NAME): cv.string,
     vol.Optional(CONF_MONITORED_CONDITIONS, default = list(SENSOR_TYPES)):
         vol.All(cv.ensure_list, [vol.In(SENSOR_TYPES)]),
-    vol.Optional(CONF_SCAN_INTERVAL, default = 60): cv.NUMERIC_STATE_CONDITION_SCHEMA,
+    vol.Optional(CONF_SCAN_INTERVAL, default = 60): cv.positive_int,
 })
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
