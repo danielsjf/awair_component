@@ -67,11 +67,10 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 
 class AwairSensor(Entity):
     """Implementation of an Awair sensor."""
-    from pyawair.objects import AwairDev
 
     _friendly_name: str
 
-    def __init__(self, awair_poller: AwairDev, device_name: str, indicator: str):
+    def __init__(self, awair_poller: object, device_name: str, indicator: str):
         """Initialize the sensor."""
         from pyawair.objects import AwairDev
 
