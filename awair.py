@@ -85,7 +85,7 @@ class AwairSensor(Entity):
         self._indicator_name = SENSOR_TYPES[indicator][0]
         self._unit = SENSOR_TYPES[indicator][1]
         self._device_name = device_name
-        self._friendly_name = '{} {}'.format(self._device_name,self._indicator_name)
+        self._friendly_name = '{} - {}'.format(self._device_name,self._indicator_name)
 
         self._data = self._poller.get_state(self._indicator_api)
 
