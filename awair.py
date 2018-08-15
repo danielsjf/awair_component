@@ -51,6 +51,8 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     from pyawair.auth import AwairAuth
     from pyawair.objects import AwairDev
 
+    _LOGGER.debug("Setting up the Awair platform")
+
     token = config.get(CONF_TOKEN)
     name = config.get(CONF_NAME)
     refresh_rate = config.get(CONF_REFRESH)
@@ -61,6 +63,9 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 
     for indicator in config[CONF_MONITORED_CONDITIONS]:
         devs.append(AwairSensor(awair_poller, name, indicator))
+
+        _LOGGER.debug("Setting up %s", name)
+
 
     add_devices(devs)
 
@@ -83,6 +88,8 @@ class AwairSensor(Entity):
         self._friendly_name = '{} {}'.format(self._device_name,self._indicator_name)
 
         self._data = self._poller.get_state(self._indicator_api)
+
+        _LOGGER.debug("Initialise %s", self._friendly_name)
 
     @property
     def name(self):
@@ -108,6 +115,7 @@ class AwairSensor(Entity):
     @property
     def state(self):
         """Return the state of the device."""
+        _LOGGER.debug("Get state for %s", self._friendly_name)
         return self._data
 
     @property
