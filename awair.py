@@ -13,7 +13,7 @@ from homeassistant.helpers.entity import Entity
 
 CONF_REFRESH = "refresh_rate"
 
-REQUIREMENTS = ['pyawair==0.0.11']
+REQUIREMENTS = ['pyawair==0.0.12']
 
 _LOGGER = logging.getLogger(__name__)
 
