@@ -116,6 +116,10 @@ class AwairSensor(Entity):
             return 'mdi:flask-outline'
         if self._indicator == 'dust':
             return 'mdi:factory'
+        if self._indicator == 'pm25':
+            return 'mdi:factory'
+        if self._indicator == 'pm10':
+            return 'mdi:factory'
 
     @property
     def state(self):
