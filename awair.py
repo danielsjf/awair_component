@@ -20,13 +20,15 @@ _LOGGER = logging.getLogger(__name__)
 ATTRIBUTION = 'Data provided Awair'
 
 # Sensor types are defined like: Name, units
-SENSOR_TYPES = {
+SENSOR_TYPES = { # Aligned with https://developer.getawair.com/console/data-docs
     'score': ['Score', 'Awair Score'],
     'temperature': ['Temperature', '°C'],
     'humidity': ['Humidity', '%'],
-    'co2': ['CO2', 'ppm of CO2'],
-    'chemicals': ['Chemicals', 'ppb of chemicals'],
-    'dust': ['Dust', 'µg/m³ of dust'],
+    'co2': ['Carbon Dioxide (CO2)', 'ppm'],
+    'chemicals': ['Chemicals (TVOCs)', 'ppb'],
+    'dust': ['Particulate matter', 'µg/m³'],
+    'pm25': ['Particulate matter 2.5', 'µg/m³'],
+    'pm10': ['Particulate matter 10', 'µg/m³'],
 }
 
 # Sensor types are defined like: Name, Name_API
@@ -36,6 +38,8 @@ SENSOR_TYPES_API = {
     'co2': 'co2',
     'chemicals': 'voc',
     'dust': 'dust',
+    'pm25': 'pm25',
+    'pm10': 'pm10',
 }
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
@@ -62,6 +66,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     devs = []
 
     for indicator in config[CONF_MONITORED_CONDITIONS]:
+
         devs.append(AwairSensor(awair_poller, name, indicator))
 
         _LOGGER.debug("Setting up %s", name)
