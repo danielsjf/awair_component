@@ -122,6 +122,27 @@ class AwairSensor(Entity):
             return 'mdi:factory'
 
     @property
+    def device_class(self):
+        """Return the device class."""
+        """Icon to use in the frontend, if any."""
+        if self._indicator == 'score':
+            return None
+        if self._indicator == 'temperature':
+            return 'temperature'
+        if self._indicator == 'humidity':
+            return 'humidity'
+        if self._indicator == 'co2':
+            return 'carbon dioxide'
+        if self._indicator == 'chemicals':
+            return 'volatile organic compounds'
+        if self._indicator == 'dust':
+            return 'particulate matter'
+        if self._indicator == 'pm25':
+            return 'particulate matter 2.5'
+        if self._indicator == 'pm10':
+            return 'particulate matter 10'
+
+    @property
     def state(self):
         """Return the state of the device."""
         _LOGGER.debug("Get state for %s", self._friendly_name)
