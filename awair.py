@@ -132,15 +132,15 @@ class AwairSensor(Entity):
         if self._indicator == 'humidity':
             return 'humidity'
         if self._indicator == 'co2':
-            return 'carbon dioxide'
+            return 'carbon_dioxide'
         if self._indicator == 'chemicals':
-            return 'volatile organic compounds'
+            return 'volatile_organic_compounds'
         if self._indicator == 'dust':
-            return 'particulate matter'
+            return 'particulate_matter'
         if self._indicator == 'pm25':
-            return 'particulate matter 2.5'
+            return 'particulate_matter_2.5'
         if self._indicator == 'pm10':
-            return 'particulate matter 10'
+            return 'particulate_matter_10'
 
     @property
     def state(self):
